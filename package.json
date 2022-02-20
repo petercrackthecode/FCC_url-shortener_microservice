@@ -4,7 +4,7 @@
     "description": "API project for freeCodeCamp",
     "main": "server.js",
     "scripts": {
-        "build:client": "cd client && npm run build && cd ..",
+        "build:client": "cd client && yarn install && yarn run build && cd ..",
         "start": "yarn run build:client && node server.js"
     },
     "dependencies": {
