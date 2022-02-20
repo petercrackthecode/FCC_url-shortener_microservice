@@ -1,8 +1,11 @@
 import './App.css';
+import { useState } from 'react';
 
 function App() {
+    const [url, setUrl] = useState('');
+
     return (
-        <div className='app'>
+        <div className="app">
             <div className="container">
                 <h2>API Project: URL Shortener Microservice</h2>
                 <h3>User Story: </h3>
@@ -48,7 +51,8 @@ function App() {
                         id="url_input"
                         type="text"
                         name="url"
-                        value="https://www.freecodecamp.org"
+                        value={url}
+                        onChange={(e) => setUrl(e.target.value)}
                     />
                     <input type="submit" value="POST URL" />
                 </form>

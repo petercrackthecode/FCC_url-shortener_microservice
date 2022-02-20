@@ -51,19 +51,21 @@ app.post('/api/shorturl/', (req, res) => {
         else if (!foundURL) {
             URL.create(
                 { shortenedURL: encryptedURL, originalURL: url },
-                (err, newURL) => {
+                (err) => {
                     if (err)
                         res.status(500).send({
                             error: 'Internal server problem',
                         });
-                    res.status(200).send({
-                        message: `The URL is successfully created at [${newURL}]`,
+                    res.status(200).json({
+                        original_url: url,
+                        short_url: encryptedURL,
                     });
                 }
             );
         } else
-            res.status(200).send({
-                message: `The newly hashed URL is at [${foundURL.shortenedURL}]`,
+            res.status(200).json({
+                original_url: url,
+                short_ur: foundURL.shortenedURL,
             });
     });
 });
@@ -73,17 +75,15 @@ app.get('/api/shorturl/:shortenedURL', (req, res) => {
     console.log(`req.params = `);
     console.log(req.params);
     console.log(`req.params ends`);
-    const {shortenedURL} = req.params;
+    const { shortenedURL } = req.params;
     console.log(`shortenedURL = ${shortenedURL}`);
-    URL.findOne({ "shortenedURL": shortenedURL }, (err, foundURL) => {
+    URL.findOne({ shortenedURL: shortenedURL }, (err, foundURL) => {
         console.log(foundURL);
 
-        if (err)
-            res.status(500).send({error: "Internel server problem"});
+        if (err) res.status(500).send({ error: 'Internel server problem' });
         else if (!foundURL) {
-            res.status(404).sendFile(process.cwd() + "/views/404.html");
-        }
-        else {
+            res.status(404).sendFile(process.cwd() + '/views/404.html');
+        } else {
             console.log(`originalURL = ${foundURL.originalURL}`);
             res.redirect(foundURL.originalURL);
         }
