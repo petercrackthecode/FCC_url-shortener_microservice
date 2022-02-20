@@ -36,7 +36,8 @@ app.use(express.static(path.join(__dirname, '/client/build')));
 /** this project needs to parse POST bodies **/
 app.post('/api/shorturl/', (req, res) => {
     let { url } = req.body;
-    if (!helper.isUrlValid(url)) res.status(406).send({ error: 'invalid url' });
+    if (!helper.isUrlValid(url))
+        return res.status(406).json({ error: 'invalid url' });
 
     url = helper.getValidUrlFormat(url);
 
@@ -72,11 +73,8 @@ app.post('/api/shorturl/', (req, res) => {
 
 // redirection
 app.get('/api/shorturl/:shortenedURL', (req, res) => {
-    console.log(`req.params = `);
-    console.log(req.params);
-    console.log(`req.params ends`);
     const { shortenedURL } = req.params;
-    console.log(`shortenedURL = ${shortenedURL}`);
+
     URL.findOne({ shortenedURL: shortenedURL }, (err, foundURL) => {
         console.log(foundURL);
 
