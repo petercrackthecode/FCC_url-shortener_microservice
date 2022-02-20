@@ -2,9 +2,9 @@
 
 require('dotenv').config();
 const express = require('express');
-const mongo = require('mongodb');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 const helper = require('./utils');
 const URL = require('./database/Url');
 
@@ -27,16 +27,11 @@ mongoose
     .then(() => console.log('Connected to MongoDB'))
     .catch((err) => console.log(err));
 
-app.use('/public', express.static(process.cwd() + '/public'));
+app.use(express.static(path.join(__dirname, '/client/build')));
 
-app.get('/', function (req, res, next) {
-    res.sendFile(process.cwd() + '/views/index.html');
-});
-
-// your first API endpoint...
-app.get('/api/hello', function (req, res, next) {
-    res.json({ greeting: 'hello API' });
-});
+// app.get('/', function (req, res, next) {
+//     res.sendFile('/index.html');
+// });
 
 /** this project needs to parse POST bodies **/
 app.post('/api/shorturl/', (req, res) => {
